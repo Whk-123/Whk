@@ -1,0 +1,34 @@
+无参数函数：
+def func():
+  pass
+func()
+
+
+有参数函数
+1.普通参数
+def func(name,age):
+  pass
+func(value1,value2)
+
+2.可变参数
+def func(*args):
+  pass
+func()        #实参的个数可以没有，也可以有多个，但不能以关键字形式出现
+
+
+
+def func(**kwargs):
+  pass
+func(key1=value1,key2=value2)  #实参的个数可以没有，也可以有多个，但必须以关键字形式赋值
+
+
+def func(*args,**fwargs):
+  pass
+list1=[v1,v2,v3]
+dict1={'1':'a','2':'b'}
+func(*list1,**dict1)  #相当于func(v1,v2,v3,'1'='a','2'='b')
+
+3.默认值参数
+def func(name,age=18):   #默认值参数
+  pass
+func('Tom',age=20)       #关键字参数
