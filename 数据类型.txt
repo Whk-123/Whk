@@ -1,7 +1,11 @@
           列表      元组      字典
+          
 定义：     []        ()        {}
+
 关键字：   list      tuple     dict
+
 数值：     ele       ele       key:value       #element元素
+
 
 
 符号：
@@ -145,5 +149,5 @@ print(i)
 dict1 = {'name':'Tom','age':'18','sex':'boy'}
 for key,value in dict1.items():
     print(key,value,sep='  ')
-  
+'''
 
