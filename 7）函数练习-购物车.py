@@ -5,7 +5,7 @@
 def add_ShoppingCart(goods_name):
     if online == 0:
         print('您还没有登录，请登录')
-        login_ing()
+        login_ing()                     #返回登录
     else:
 
         ShoppingCart.append(goods_name)
@@ -13,7 +13,7 @@ def add_ShoppingCart(goods_name):
         print("你的购物车内有：", ShoppingCart)
         answer = input('是否继续购物？y/n  \n')
         if answer == 'y':
-            return shopping()
+            shopping()            #返回购物
 
 
 def login(username, password):
@@ -24,7 +24,7 @@ def login(username, password):
         print("登录成功")
         global online
         online = 1
-        return add_ShoppingCart(goods_name1)
+        add_ShoppingCart(goods_name1)       #登录成功将商品添加进购物车
 
     else:
         print('用户名或密码错误！')
@@ -35,7 +35,7 @@ def login_ing():
 
     username1 = input('请输入用户名：')
     password1 = input('请输入密码：')
-    return login(username1, password1)
+    login(username1, password1)
 
 
 def shopping():
