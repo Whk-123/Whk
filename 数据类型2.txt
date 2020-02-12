@@ -1,0 +1,67 @@
+#####集合
+关键字：set
+特点：element不重复
+
+可以应用到快速去重
+'''
+list1=[2,3,4,4,3,3,6,7]
+s=set(list)
+print(s)#{2,3,4,6,7}
+
+'''
+
+#增加
+add() ---->添加一个元素,无序添加
+update()---->可以添加多个元素，无序添加
+
+#删除
+remove()---->如果元素不存在则报错
+pop()---->随机删除，一般删除第一个元素
+clear()---->清空
+dicard()---->类似remove(),元素不存在不报错
+
+
+'''
+-----案例-----
+1.产生10个1~20的随机数，去除里面的重复项
+2.输入一个元素，将此元素从不重复的集合中删除
+#1
+import random
+list1=[]
+for i in range(11):
+    list1.append(random.randint(1,21))
+set1=set(a)
+print(list1)
+print(set1)
+number1=int(input("输入一个元素，将此元素从s中删除:"))
+set1.discard(number1)
+
+
+#2
+import random
+set1=set()
+for i in range(11):
+    a = random.randint(1,21)
+    set1.add(a)    
+print(set1)
+number1=int(input("输入一个元素，将此元素从s中删除:"))
+set1.discard(number1)
+print(set1)
+'''
+
+
+#集合  符号
+in
+==
+!=
+-    ---->差集   difference()
+     set2-set1 与  set2.difference(set1)一样
+     
+     difference_update()---->将值更新并直接赋值给原集合
+
+&    ---->交集    intersection()     intersection_update()
+|    ---->并集    union()             union__update()
+^    ---->对称差集，找出两个set中不同元素   symmetric_difference()       symmetric_difference_update()
+
+
+不支持+ *
