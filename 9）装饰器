@@ -1,0 +1,51 @@
+def decorate1(x):
+    a = 100
+    print('外层测试1')
+
+    def wrapper1(*args,**kwargs):
+        x(*args,**kwargs)
+        print('第一次装饰中……')
+        print('第一次装饰完成！', a)
+
+
+    print('外层测试2')
+    return wrapper1
+
+def decorate2(y):
+    b=200
+    print('外层测试3')
+
+    def wrapper2(*args,**kwargs):
+        y(*args,**kwargs)
+        print('第二次装饰中……')
+        print('第二次装饰完成！', b)
+    print('外层测试4')
+    return wrapper2
+
+
+'''
+1.执行装饰器decorate1，令x=house,执行decorate1(x);
+2.返回wrapper1，令house = wrapper1  ;
+3.接着执行装饰器decorate2，令y=house=wrapper1,执行decorate2(y);
+4.返回wrapper2,令house=wrapper1=wrapper2 ;
+5.执行house(),就是执行wrapper2() ;
+6.因为内置函数wrapper2中的y=wrapper1，所以y(*args,**kwargs)等于执行wrapper1(*args,**kwargs)，执行
+  内置函数wrapper1
+7.内置函数wrapper1执行完成后继续执行内置函数wrapper2
+
+8.多层装饰器依此类推
+
+'''
+@decorate2
+@decorate1
+def house(n,key='c'):
+    print('房子太简陋了，需要装修！',n,key)
+
+
+house(8,key='d')  # 此时的house = wrapper，house()就是调用内部函数wrapper()
+'''
+1.house被装饰函数
+2.将被装饰函数作为参数传给装饰器decorate
+3.执行decorate函数
+4.将返回值赋值给house
+'''
