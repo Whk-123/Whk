@@ -1,0 +1,13 @@
+#递归函数
+函数自己调自己
+
+1。一定要设置递归终点
+
+
+def sum1(n):
+  if n==0:
+    return 0
+  else:
+    return n+sum1(n-1)
+result=sum1(10)
+print(result)
