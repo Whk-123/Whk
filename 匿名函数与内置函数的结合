@@ -1,0 +1,71 @@
+list1 = [3,5,8,9,0]
+m = max(list1)
+print(m)            #9
+
+
+
+list2 = [{'a':10,'b':20},{'a':12,'b':25},{'a':11,'b':26},{'a':9,'b':23},]
+
+m = max(list2,key=lambda x:x['a'])     #max(*args, key=func)
+print(m)                  # {'a':12,'b':25}
+'''
+lambda x:x['a']
+↓
+def func(x):
+    return x['a']
+'''
+
+
+--------------------------------------------------------------------
+
+#####     map函数     对列表每个元素进行操作
+
+
+list1 = [1,23,5,7,8,3,4,6,1]
+
+result1 = map(lambda x:x if x%2==0 else x+1,list1)           #利用map函数，实现将列表中的元素偶数不变、奇数加1
+
+print(list(result1))
+
+result2 = map(lambda x:x+20 ,list1)                   #利用map函数，实现列表元素全加20
+
+print(list(result2))
+-------------------------------------------------------------------------
+
+
+####  reduce函数   对列表、元组中的元素进行 加减乘除 运算的函数
+####   在functools包 中
+
+from functools import reduce
+
+tuple1=(2,2,2,2,2,2)
+
+result1=reduce(lambda x,y:x+y,tuple1)      #首先将元组中的第一个元素与第二个相加，然后将结果与第三个相加，然后将结果与第四个相加……
+result2=reduce(lambda x,y:x-y,tuple1)       #首先将元组中的第一个元素与第二个相减，然后将结果与第三个相减，然后将结果与第四个相减……
+result3=reduce(lambda x,y:x*y,tuple1)       #首先将元组中的第一个元素与第二个相乘，然后将结果与第三个相乘，然后将结果与第四个相乘……
+result4=reduce(lambda x,y:x/y,tuple1)       #首先将元组中的第一个元素与第二个相除，然后将结果与第三个相除，然后将结果与第四个相除……
+print(result1)
+print(result2)
+print(result3)
+print(result4)
+
+
+-----------------------------------------------------------------------------
+
+
+####filter函数    筛选
+
+list1 = [{'a':10,'b':20},{'a':12,'b':25},{'a':11,'b':16},{'a':9,'b':23},]
+result = filter(lambda x:x['b']>20,list1)     #找出list1中'b'的value>20的
+print(list(result))
+
+-----------------------------------------------------------------------------
+
+
+####sorted函数   排序
+
+list1 = [{'a':10,'b':20},{'a':12,'b':25},{'a':11,'b':16},{'a':9,'b':23},]
+result = sorted(list1，key=lambda x:x['b'])       #按‘b’内的value排序
+print(result)
+
+
