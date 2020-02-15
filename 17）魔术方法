@@ -1,0 +1,431 @@
+#__new__和__init__
+
+'''
+__new__方法是传入类(cls)，而__init__方法传入类的实例化对象(self)，而有意思的是，__new__方法返回的值就是一个实例化对象
+（ps:如果__new__方法返回None，则__init__方法不会被执行，并且返回值只能调用父类中的__new__方法，而不能调用毫无关系的类的__new__方法）
+我们可以这么理解它们之间的关系，__new__是开辟疆域的大将军，而__init__是在这片疆域上辛勤劳作的小老百姓，
+只有__new__执行完后，开辟好疆域后，__init__才能工作。
+————————————————
+引用：版权声明：本文为CSDN博主「SJ2050」的原创文章，遵循 CC 4.0 BY-SA 版权协议，转载请附上原文出处链接及本声明。
+      原文链接：https://blog.csdn.net/sj2050/article/details/81172022
+'''
+'''
+class A:
+    def __new__(cls):
+        print("__new__方法被执行")
+        return super().__new__(cls)
+
+    def __init__(self):
+        print("__init__方法被执行")
+
+
+b = A()
+'''
+
+
+
+其他常用魔术方法
+__init__：构造函数
+触发时机：实例化对象之后自动触发，在__new__之后执行。实例化对象其实包含两步，1：制作一个对象 2：为对象初始化操作
+作用：为对象添加对象的所属成员
+参数：self必填，接收当前对象，其他参数可根据实例化的传参决定
+返回值：无
+注意事项：无
+class Human:
+
+    def __init__(self, name):
+        print('init method for {}'.format(name))
+
+    # 方法
+    def eat(self):
+        print('eat method')
+
+    def run(self):
+        print('run method')
+
+
+human = Human('chengjie')  # 执行这一步实例化对象human之后, 会触发 __init__, 打印出init method for chengjie
+
+
+-------------------------------------------------------------------
+__new__：构造函数
+触发时机：实例化对象的时候自动触发，在__init__之前执行。实例化对象其实包含两步，1：制作一个对象 2：为对象初始化操作
+作用：管理控制对象的生成过程；实现单例设计模式
+参数：cls必填，其他参数可根据实例化的传参决定
+返回值：必须返回类的实例化对象
+注意事项：无
+class Human:
+
+    def __init__(self, name):
+        print('init method for {}'.format(name))
+
+    def __new__(cls, name):
+        print(name)
+        if name == 'chengjie':
+            r = super(Human, cls).__new__(cls)
+            return r
+        else:
+            pass
+
+
+    # 方法
+    def eat(self):
+        print('eat method')
+
+    def run(self):
+        print('run method')
+
+
+human = Human('chengjie')  # 执行这一步实例化对象human之后, 会先触发__new__打印出chengjie,返回实例化对象,再触发 __init__,打印出init method for chengjie
+
+
+
+-------------------------------------------------------------------
+__del__：析构方法
+触发时机：对象被系统回收的时候自动触发（del不一定触发）
+作用：回收程序使用过程中的信息和变量等
+参数：self必填，接收当前对象
+返回值：无
+注意事项：如果主动使用del（非__del__），则会在调用del的时候触发，而非程序最后，但也不是调用了del一定会触发__del__
+class Human:
+
+    def __init__(self, name):
+        print('init method for {}'.format(name))
+
+    def __new__(cls, name):
+        print(name)
+        if name == 'chengjie':
+            r = super(Human, cls).__new__(cls)
+            return r
+        else:
+            pass
+
+    def __del__(self):
+        print('del method')
+
+
+    # 方法
+    def eat(self):
+        print('eat method')
+
+    def run(self):
+        print('run method')
+
+
+human = Human('chengjie')  # 执行这一步实例化对象human之后, 会先触发__new__打印出chengjie,返回实例化对象,再触发 __init__,打印出init method for chengjie
+human2 = human
+del human # 此时不会触发__del__，在程序最后才会触发，如果没有human2 = human，则在此处调用del会触发__del__，程序最后则不会触发
+print('running') # 在执行完这一句之后，会触发__del__，打印出del method，__del__总是会在程序最后被触发
+
+
+-------------------------------------------------------------------
+__call__
+触发时机：将实例化对象当做函数调用的时候自动触发（函数其实也是对象，python中一切皆对象）
+作用：常用语归结类或对象的操作步骤，方便后期操作
+参数：self必填，接收当前对象
+返回值：可有可无
+注意事项：无
+class MakeCake:
+
+    def buy_yuan_liao(self):
+        print('购买原料')
+
+    def huo_mian(self):
+        print('和面')
+
+    def fa_jiao(self):
+        print('发酵')
+
+    def hong_bei(self):
+        print('烘焙')
+
+    def __call__(self, *args, **kwargs):
+        self.buy_yuan_liao()
+        self.huo_mian()
+        self.fa_jiao()
+        self.hong_bei()
+        print('蛋糕制作完成')
+
+
+maek_cake = MakeCake() # 实例化一个类MakeCake的对象make_cake
+maek_cake() # 把对象make_cake当做一个函数调用
+>>>>购买原料
+    和面
+    发酵
+    烘焙
+    蛋糕制作完成
+    
+    
+-------------------------------------------------------------------
+__len__
+触发时机：使用len函数检测对象长度的时候自动触发
+作用：使len函数可以直接检测对象中某个数据的长度
+参数：self必填，接收当前对象，无其他参数
+返回值：必须有，且必须是整形
+注意事项：无
+class Human:
+
+    def __init__(self, name):
+        self.name = name
+
+    def __len__(self):
+        # 必须有返回值，而且必须是整形
+        return len(self.name)
+
+
+    # 方法
+    def eat(self):
+        print('eat method')
+
+    def run(self):
+        print('run method')
+
+
+human = Human('chengjie')
+print(len(human)) #如果没有实现__len__, 则无法直接使用len(human), 否则报TypeError: object of type 'Human' has no len(), 实现了__len__后，可以根据需要
+
+>>>>8
+
+
+-------------------------------------------------------------------
+__str__
+触发时机：使用print打印对象的时候触发
+作用：可以自定义打印对象时输出的内容
+参数：self必填，接收当前对象
+返回值：必须有，且一定是字符串类型
+注意事项：除print之外，只用str()时也会触发该魔术方法
+class Human:
+
+    def __init__(self, name):
+        self.name = name
+
+    def __str__(self):
+        return 'Name: %s' % self.name
+
+    # 方法
+    def eat(self):
+        print('eat method')
+
+    def run(self):
+        print('run method')
+
+
+human = Human('Python')
+print(human)   #如果没有__str__魔术方法，则打印出来的是类似于<__main__.Human object at 0x000001BFE3F39828>，这是继承自object的__str__方法
+
+>>>>>Name: Python
+
+
+-------------------------------------------------------------------
+__repr__
+触发时机：使用repr转换对象的时候触发
+作用：可以设置repr函数操作对象的输入结果
+参数：self必填，接收当前对象
+返回值：必须有，且一定是字符串类型
+注意事项：其实__str__和__repr__是完全一样的，在实际中，我们可以只用实现__repr__，因为如果一个对象没有实现__str__，解释器会用__repr__代替
+class Human:
+
+    def __init__(self, name):
+        self.name = name
+
+    # def __str__(self):
+    #     return 'Name: %s' % self.name
+
+    def __repr__(self):
+        return 'Name:%s' % self.name
+
+    # 方法
+    def eat(self):
+        print('eat method')
+
+    def run(self):
+        print('run method')
+
+
+human = Human('Python')
+print(human) # 该类没有实现__str__，但是打印对象的时候，会执行__repr__
+
+>>>>>Name:Python
+
+-------------------------------------------------------------------
+__bool__
+触发时机：使用bool()转换对象的时候触发
+作用：用于检测对象成员的信息
+参数：self必填，接收当前对象
+返回值：必须有，且一定是bool值，即True或False
+注意事项：无
+class Human:
+
+    def __init__(self, name):
+        self.name = name
+
+    def __bool__(self):
+        if self.name == 'cheng':
+            return True
+        else:
+            return False
+
+    # 方法
+    def eat(self):
+        print('eat method')
+
+    def run(self):
+        print('run method')
+
+
+human = Human('cheng')
+human2 = Human('Python')
+print(bool(human))
+print(bool(human2))
+
+>>>>>True
+>>>>>False
+与属性相关的魔术方法
+属性的访问顺序
+调用__getattribute__
+调用数据描述符
+调用当前对象的所属成员
+调用类的所属成员
+调用非数据描述符
+调用父类的所属成员
+调用__getattr__
+
+
+-------------------------------------------------------------------
+__getattribute__
+触发时机：访问对象的成员属性的时候自动触发，无论该成员属性是否存在
+作用：可以在用户访问成员属性的时候进行数据处理等操作，例如对敏感信息进行脱敏处理
+参数：self接收当前对象，第二个参数接收访问的成员属性名称字符串
+返回值：可有可无，没有的话就返回None
+注意事项：在该魔术方法中，禁止使用 当前对象.成员 的方式（例如：self.name）访问成员，否则会发生递归次数过大的错误RecursionError: maximum recursion depth exceeded while calling a Python object
+class Human:
+
+    def __init__(self):
+        self.name = 'Python'
+        self.sex = 'male'
+        self.age = 18
+
+    def __getattribute__(self, item):
+        print('getattribute call by %s' % self)
+        # return self.name   如果返回的是self.name，则会报错
+        return super().__getattribute__(item)
+
+    def eat(self):
+        print('eat method is running')
+
+
+human = Human()
+print(human.name)
+
+>>>>>>>>getattribute call by <__main__.Human object at 0x000001D633849240>
+>>>>>>>>Python
+
+-------------------------------------------------------------------
+__getattr__
+触发时机：访问不存在的对象成员属性的时候自动触发
+作用：防止访问不存在的对象成员的时候报错；为不存在的成员定义值
+参数：self接收当前对象，第二个参数接收访问的成员属性名称字符串
+返回值：可有可无，没有的话就返回None
+注意事项：__getattribute__和__getattr__可以同时存在，如果同时存在，那么在访问不存在的值时，__getattribute__和__getattr__都会触发
+class Human:
+
+    # 成员属性
+    def __init__(self):
+        self.name = 'Python'
+        self.sex = 'male'
+        self.age = 18
+
+    def __getattr__(self, item):
+        if item == 'score':
+            return 88
+        else:
+            return 'error item'
+
+    def eat(self):
+        print('eat method is running')
+
+
+human = Human()
+print(human.score)
+print(human.school)
+
+>>>>88
+>>>>error item
+
+
+-------------------------------------------------------------------
+__setattr__
+触发时机：添加或者修改对象成员的时候自动触发
+作用：可以限制或者管理对象成员的添加或修改操作
+参数：self接收当前对象，第二个参数接收设置的成员名称字符串，第三个参数接收设置的值
+返回值：无
+注意事项：在该魔术方法中，禁止使用 当前对象.成员=值 的方式（例如：self.name = 'Mike'）设置成员，否则会发生递归次数过大的错误RecursionError: maximum recursion depth exceeded while calling a Python object
+class Human:
+
+    # 成员属性
+    def __init__(self):
+        self.name = 'Python'
+        self.sex = 'male'
+        self.age = 18
+
+    def __setattr__(self, key, value):
+        if key == 'school':   # 当设置的成员名称为school时，直接跳过，不设置
+            pass
+        else:
+            super().__setattr__(key,value) #注意此处不可以用self.key = value
+
+    def eat(self):
+        print('eat method is running')
+
+
+human = Human()
+human.school = 'QH'
+human.score = 99
+print(human.school)  # 报错，school不存在
+print(human.score) # 输出 99
+
+>>>>AttributeError: 'Human' object has no attribute 'school'
+>>>>99
+
+-------------------------------------------------------------------
+__delattr__
+触发时机：删除对象成员的时候自动触发
+作用：可以限制删除对象成员或者在删除时执行额外的工作
+参数：self接收当前对象，第二个参数接收删除的成员名称字符串
+返回值：可有可无，无的话则不会执行删除操作
+注意事项：在该魔术方法中，禁止使用 del 当前对象.成员 的方式（例如：del self.name）删除成员，否则会发生递归次数过大的错误RecursionError: maximum recursion depth exceeded while calling a Python object
+
+class Human:
+
+    def __init__(self):
+        self.name = 'Python'
+        self.sex = 'male'
+        self.age = 18
+
+    def __delattr__(self, item):
+        if item == 'name': # 当删除的对象成员名称为name时，不执行删除操作，即限制了删除name成员
+            pass
+        else:
+            # del self.sex  如果执行此行，则会报错，递归数过大
+            return super().__delattr__(item)
+
+    def eat(self):
+        print('eat method is running')
+
+
+human = Human()
+del human.name  # 不会删除name属性
+del human.sex  # 会删除sex属性
+print(human.name)
+print(human.sex)
+
+>>>>Python
+>>>>AttributeError: 'Human' object has no attribute 'sex'
+
+
+引用自：
+作者：慢慢慢慢热
+链接：https://www.jianshu.com/p/892792cb774d
+来源：简书
+著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+引用：https://www.jianshu.com/p/892792cb774d
