@@ -1,0 +1,47 @@
+#不用装饰器
+class Person:
+    def __init__(self, name, age, sex):
+        self.__name = name
+        self.__age = age
+        self.__sex = sex
+    def setAge(self,age):
+        self.__age = age
+
+    def getAge(self,):
+        return self.__age
+
+    def __str__(self):
+        return '姓名：{},年龄：{},性别：{}'.format(self.__name, self.__age, self.__sex)
+
+
+p1 = Person('whk', 22, '男')
+print(p1.getAge())
+print(p1.__dir__())
+print(dir(p1))
+
+
+--------------------------------------------------------------
+#使用装饰器
+
+class Person:
+    def __init__(self, name, age, sex):
+        self.__name = name
+        self.__age = age
+        self.__sex = sex
+
+    @property
+    def Age(self):
+        return self.__age
+
+    @Age.setter
+    def Age(self, age):
+        self.__age = age
+
+    def __str__(self):
+        return '姓名：{},年龄：{},性别：{}'.format(self.__name, self.__age, self.__sex)
+
+
+p1 = Person('whk', 22, '男')
+print(p1)                 
+p1.Age = 20                    
+print(p1.Age)
