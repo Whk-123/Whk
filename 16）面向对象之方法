@@ -1,0 +1,46 @@
+#类方法
+'''
+特点：
+1.定义需要装饰器@classmethod
+2.类方法的参数不是对象，而是类
+  @classmethod
+  def example(cls):
+    pass
+3.类方法中只能使用类属性，不能使用对象
+4.类方法不能使用普通方法
+
+作用：
+因为只能访问类属性和类方法，所以可以在对象创建之前，如果需要完成一些动作（功能）
+'''
+
+'''
+class Phone:
+    def __init__(self):
+        self.name = 'whk'
+        self.age = 21
+        self.sex = '男'
+
+    def s1(self):
+        print('---------->', self.name)
+        print('----------->{}岁'.format(self.age))
+        print('  =-', self.sex)
+
+    @classmethod                   #类方法
+    def s2(cls):
+        print('s2  ' * 30)
+
+p = Phone()
+print(p.sex)
+
+print(Phone.s2())
+'''
+
+
+----------------------------------------------------
+#静态方法
+#类似类方法
+1.需要装饰器@staticmethod
+2.静态方法无需传递此参数
+3.只能访问类的属性和方法，对象的无法访问
+
+
