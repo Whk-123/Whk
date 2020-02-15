@@ -1,0 +1,33 @@
+class Person:
+    def __init__(self, name, age):
+        self.name = name
+        self.age = age
+
+
+class Student(Person):
+    def __init__(self, name, age, school, clasz):
+        super().__init__(name, age)
+        self.school = school
+        self.clasz = clasz
+
+    def stu(self):
+        print('{},今年{}岁，在{}{}读书。'.format(self.name, self.age, self.school, self.clasz))
+
+
+class Doctor(Person):
+    def __init__(self, name, age, hospital, patients, patients_num):
+        super(Doctor, self).__init__(name, age)
+        self.patients = patients
+        self.hospital = hospital
+        self.patients_num = patients_num
+
+    def doc(self):
+        print('{},今年{}岁,在{}当医生，有{}个病人，分别是{}。'.format(self.name, self.age, self.hospital, self.patients,
+                                                     self.patients_num))
+
+
+s = Student('whk', 20, '哈尔滨佛教学院(哈佛)', '计算机10班')
+list1 = ['Tom', 'Lily', 'Lucy', 'Jack']
+d = Doctor('whk', 40, '人民医院', 4, list1)
+s.stu()
+d.doc()
